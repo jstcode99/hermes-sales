@@ -79,6 +79,37 @@ export const CACHE_TAGS = {
       `municipalities:by-department:${departmentId}`,
     DETAIL: (id: number) => `municipalities:${id}`,
   },
+  //companies
+  COMPANIES: {
+    ALL: "companies:all",
+    DETAIL: (id: string) => `companies:${id}`,
+    BY_SLUG: (slug: string) => `companies:slug:${slug}`,
+    BY_WILDCARD: (wildcard: string) => `companies:wildcard:${wildcard}`,
+  },
+  //branches
+  BRANCHES: {
+    ALL: "branches:all",
+    BY_COMPANY: (companyId: string) => `branches:company:${companyId}`,
+    DETAIL: (id: string) => `branches:${id}`,
+  },
+  //plans
+  PLANS: {
+    ALL: "plans:all",
+    DETAIL: (id: string) => `plans:${id}`,
+  },
+  //subscriptions
+  SUBSCRIPTIONS: {
+    BY_COMPANY: (companyId: string) => `subscriptions:company:${companyId}`,
+  },
+  //company_users
+  COMPANY_USERS: {
+    BY_COMPANY: (companyId: string) => `company-users:company:${companyId}`,
+    BY_USER: (userId: string) => `company-users:user:${userId}`,
+  },
+  //billing
+  BILLING: {
+    BY_COMPANY: (companyId: string) => `billing:company:${companyId}`,
+  },
 } as const;
 
 // ==========================================
@@ -87,6 +118,7 @@ export const CACHE_TAGS = {
 
 export const STORAGE_BUCKETS = {
   AVATARS: "avatars",
+  COMPANY_LOGOS: "company-logos",
   SOME_LOGOS: "some-logos",
   SOME: "some-images",
 } as const;

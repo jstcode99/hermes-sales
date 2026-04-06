@@ -1,10 +1,10 @@
 export const ROUTES = {
   base: "/",
-  auth: "/en/auth",
-  login: "/en/login",
-  otp: "/en/auth/otp",
-  callback: "/en/auth/callback",
-  dashboard: "/en/dashboard",
+  auth: "/auth",
+  signin: "/signin",
+  signup: "/signup",
+  callback: "/auth/callback",
+  dashboard: "/dashboard",
 } as const;
 
 export function getRoutes(keys: readonly (keyof typeof ROUTES)[]) {

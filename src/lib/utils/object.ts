@@ -42,12 +42,7 @@ export const flatten = (obj: unknown, prefix = "", formData: FormData) => {
 
 export function pickDefined<T extends object>(
   obj: T,
-): {
-  [K in keyof T as T[K] extends null | undefined ? never : K]: Exclude<
-    T[K],
-    null | undefined
-  >;
-} {
+): PickDefined<T> {
   const result: Partial<Record<keyof T, unknown>> = {};
 
   for (const key in obj) {
@@ -57,5 +52,12 @@ export function pickDefined<T extends object>(
     }
   }
 
-  return result as any;
+  return result as unknown as PickDefined<T>;
 }
+
+type PickDefined<T extends object> = {
+  [K in keyof T as T[K] extends null | undefined ? never : K]: Exclude<
+    T[K],
+    null | undefined
+  >;
+};
