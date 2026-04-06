@@ -14,10 +14,10 @@
     }
   },
   "tools": {
-    "linear_*": false,
-    "supabase_*": false,
-    "context7_*": false,
-    "shadcn_*": false
+    "linear_*": true,
+    "supabase_*": true,
+    "context7_*": true,
+    "shadcn_*": true
   },
   "mcp": {
     "shadcn": {
