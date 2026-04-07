@@ -7,11 +7,10 @@ import { toast } from "sonner";
 import { signInWithGithubAction } from "../actions/oauth.actions";
 
 interface GithubAuthButtonProps {
-  mode: "signin" | "signup";
   className?: string;
 }
 
-export function GithubAuthButton({ mode, className }: GithubAuthButtonProps) {
+export function GithubAuthButton({ className }: GithubAuthButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGithubAuth = async () => {
@@ -35,11 +34,11 @@ export function GithubAuthButton({ mode, className }: GithubAuthButtonProps) {
       disabled={isLoading}
     >
       {isLoading ? (
-        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+        <Loader2 className="size-4 animate-spin" />
       ) : (
-        <GitBranch className="mr-2 h-4 w-4" />
+        <GitBranch className="size-4" />
       )}
-      {mode === "signin" ? "Sign in with GitHub" : "Sign up with GitHub"}
+      GitHub
     </Button>
   );
 }

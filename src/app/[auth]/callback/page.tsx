@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { handleOAuthCallback } from "@modules/auth/actions/oauth.actions";
 
 interface CallbackPageProps {
@@ -8,7 +7,7 @@ interface CallbackPageProps {
 
 export default async function CallbackPage({ searchParams }: CallbackPageProps) {
   const params = await searchParams;
-  
+
   // Check for error in URL
   if (params.error) {
     console.error("OAuth error:", params.error);

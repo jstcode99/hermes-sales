@@ -51,19 +51,19 @@ export default function SignInPage() {
   return (
     <Card className="w-full shadow-lg">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
-          Welcome back
+        <CardTitle className="text-2xl font-bold text-center">
+          Bienvenido de nuevo
         </CardTitle>
         <CardDescription>
-          Enter your credentials to access your account
+          Ingrese sus credenciales para acceder a su cuenta
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
         <CardContent className="space-y-4">
           {/* OAuth Buttons */}
           <div className="grid grid-cols-2 gap-3">
-            <GoogleSignInButton />
-            <GithubAuthButton mode="signin" />
+            <GoogleSignInButton/>
+            <GithubAuthButton className="rounded-xs py-[18.9px]"/>
           </div>
 
           <div className="relative">
@@ -72,14 +72,14 @@ export default function SignInPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+                O continuar con
               </span>
             </div>
           </div>
 
           {/* Email Field */}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Correo electrónico</Label>
             <Input
               id="email"
               name="email"
@@ -95,12 +95,12 @@ export default function SignInPage() {
           {/* Password Field */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Contraseña</Label>
               <Link
                 href="/forgot-password"
                 className="text-sm text-primary hover:underline"
               >
-                Forgot password?
+                Olvidé mi contraseña?
               </Link>
             </div>
             <Input
@@ -116,14 +116,14 @@ export default function SignInPage() {
           </div>
 
           {/* Remember Me */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 py-1">
             <Checkbox
               id="remember-me"
               checked={rememberMe}
               onCheckedChange={(checked) => setRememberMe(checked as boolean)}
             />
             <Label htmlFor="remember-me" className="text-sm font-normal">
-              Remember me for 30 days
+              Recordarme por 30 días
             </Label>
           </div>
         </CardContent>
@@ -133,17 +133,17 @@ export default function SignInPage() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
+                Iniciando sesión...
               </>
             ) : (
-              "Sign in"
+              "Iniciar sesión"
             )}
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-primary hover:underline">
-              Sign up
+            No tienes una cuenta?{" "}
+            <Link href="/auth/signup" className="text-primary hover:underline">
+              Regístrate
             </Link>
           </p>
         </CardFooter>

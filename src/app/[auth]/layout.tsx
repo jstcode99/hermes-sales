@@ -16,8 +16,8 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary/20">
-      <div className="w-full max-w-md p-8">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-background via-background to-secondary/20">
+      <div className="w-full max-w-xl p-8">
         {children}
       </div>
     </div>

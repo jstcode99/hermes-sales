@@ -72,11 +72,11 @@ export default function SignUpPage() {
   return (
     <Card className="w-full shadow-lg">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">
-          Create an account
+        <CardTitle className="text-2xl font-bold text-center">
+          Crea tu cuenta
         </CardTitle>
         <CardDescription>
-          Enter your information to get started
+          Rellena los siguientes campos para crear tu cuenta.
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
@@ -84,7 +84,7 @@ export default function SignUpPage() {
           {/* OAuth Buttons */}
           <div className="grid grid-cols-2 gap-3">
             <GoogleSignUpButton />
-            <GithubAuthButton mode="signup" />
+            <GithubAuthButton className="rounded-xs p-[18.9px]"/>
           </div>
 
           <div className="relative">
@@ -93,14 +93,14 @@ export default function SignUpPage() {
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
+                O continua con tu correo
               </span>
             </div>
           </div>
 
           {/* Full Name */}
           <div className="space-y-2">
-            <Label htmlFor="fullName">Full Name</Label>
+            <Label htmlFor="fullName">Nombre completo</Label>
             <Input
               id="fullName"
               name="fullName"
@@ -113,7 +113,7 @@ export default function SignUpPage() {
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Correo</Label>
             <Input
               id="email"
               name="email"
@@ -127,7 +127,7 @@ export default function SignUpPage() {
 
           {/* Password */}
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">Contraseña</Label>
             <Input
               id="password"
               name="password"
@@ -142,7 +142,7 @@ export default function SignUpPage() {
 
           {/* Phone */}
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone</Label>
+            <Label htmlFor="phone">Teléfono</Label>
             <Input
               id="phone"
               name="phone"
@@ -154,16 +154,17 @@ export default function SignUpPage() {
               minLength={10}
             />
           </div>
-
-          {/* Document Type & ID */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="documentType">Document Type</Label>
+              <Label htmlFor="documentType">Tipo de documento</Label>
               <Select
                 value={formData.documentType}
                 onValueChange={(value) => handleChange("documentType", value)}
               >
-                <SelectTrigger id="documentType">
+                <SelectTrigger
+                  className="w-full"
+                  id="documentType"
+                >
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -176,7 +177,7 @@ export default function SignUpPage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="documentId">Document Number</Label>
+              <Label htmlFor="documentId">Número de documento</Label>
               <Input
                 id="documentId"
                 name="documentId"
@@ -187,11 +188,10 @@ export default function SignUpPage() {
               />
             </div>
           </div>
-
           {/* Department & Municipality */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="departmentId">Department</Label>
+              <Label htmlFor="departmentId">Departamento</Label>
               <Select
                 value={formData.departmentId?.toString() || ""}
                 onValueChange={(value) => {
@@ -199,7 +199,10 @@ export default function SignUpPage() {
                   handleChange("municipalityId", "");
                 }}
               >
-                <SelectTrigger id="departmentId">
+                <SelectTrigger
+                  className="w-full"
+                  id="departmentId"
+                >
                   <SelectValue placeholder="Select department" />
                 </SelectTrigger>
                 <SelectContent>
@@ -212,13 +215,16 @@ export default function SignUpPage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="municipalityId">Municipality</Label>
+              <Label htmlFor="municipalityId">Municipio</Label>
               <Select
                 value={formData.municipalityId?.toString() || ""}
                 onValueChange={(value) => handleChange("municipalityId", parseInt(value))}
                 disabled={!formData.departmentId || geoLoading}
               >
-                <SelectTrigger id="municipalityId">
+                <SelectTrigger
+                  className="w-full"
+                  id="municipalityId"
+                >
                   <SelectValue placeholder="Select municipality" />
                 </SelectTrigger>
                 <SelectContent>
@@ -234,7 +240,7 @@ export default function SignUpPage() {
 
           {/* Referral Code */}
           <div className="space-y-2">
-            <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+            <Label htmlFor="referralCode">Codigo de referencia (Opcional)</Label>
             <Input
               id="referralCode"
               name="referralCode"
@@ -246,7 +252,7 @@ export default function SignUpPage() {
 
           {/* Company Name */}
           <div className="space-y-2">
-            <Label htmlFor="companyName">Company Name (Optional)</Label>
+            <Label htmlFor="companyName">Nombre de la empresa (Opcional)</Label>
             <Input
               id="companyName"
               name="companyName"
@@ -257,21 +263,23 @@ export default function SignUpPage() {
           </div>
 
           {/* Terms */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 py-3">
             <Checkbox
               id="termsAccepted"
               checked={formData.termsAccepted}
               onCheckedChange={(checked) => handleChange("termsAccepted", checked)}
             />
             <Label htmlFor="termsAccepted" className="text-sm font-normal">
-              I agree to the{" "}
-              <Link href="/terms" className="text-primary hover:underline">
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="text-primary hover:underline">
-                Privacy Policy
-              </Link>
+              <p className="text-wrap space-x-1 font-normal ">
+                Acepto los
+                <Link href="/terms" className="ml-1 underline">
+                  terminos & condiciones
+                </Link>
+                y
+                <Link href="/privacy" className="ml-1 underline">
+                  las politicas de privacidad
+                </Link>
+              </p>
             </Label>
           </div>
         </CardContent>
@@ -281,17 +289,17 @@ export default function SignUpPage() {
             {isLoading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
+                Creando cuenta...
               </>
             ) : (
-              "Create account"
+              "Crear cuenta"
             )}
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
-            Already have an account?{" "}
-            <Link href="/signin" className="text-primary hover:underline">
-              Sign in
+            Ya tienes una cuenta?
+            <Link href="/auth/signin" className="ml-2 text-primary hover:underline">
+              Inicar sesión
             </Link>
           </p>
         </CardFooter>

@@ -34,7 +34,7 @@ export async function signInWithGoogleAction(credential: string) {
   if (!profile) {
     // Get user info from the ID token claims
     const userMeta = data.user.user_metadata;
-    
+
     await supabase.from("profiles").insert({
       id: data.user.id,
       full_name: userMeta?.full_name || userMeta?.name || "User",
@@ -180,7 +180,7 @@ export async function handleOAuthCallback() {
 
   if (!profile) {
     const userMeta = user.user_metadata;
-    
+
     await supabase.from("profiles").insert({
       id: user.id,
       full_name: userMeta?.full_name || userMeta?.name || "User",

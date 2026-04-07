@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import { Loader2 } from "lucide-react";
 import { Button } from "@components/ui/button";
 import { toast } from "sonner";
 
@@ -24,7 +23,6 @@ export function GoogleAuthButton({
   isLoading: externalLoading,
   className,
 }: GoogleAuthButtonProps) {
-  const [internalLoading, setInternalLoading] = useState(false);
 
   if (!googleClientId) {
     return (
@@ -39,15 +37,12 @@ export function GoogleAuthButton({
       toast.error("No credential received from Google");
       return;
     }
-    setInternalLoading(true);
     try {
       await onSuccess(credentialResponse.credential);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Authentication failed";
       onError?.(message);
       toast.error(message);
-    } finally {
-      setInternalLoading(false);
     }
   };
 
@@ -56,8 +51,6 @@ export function GoogleAuthButton({
     onError?.(message);
     toast.error(message);
   };
-
-  const isLoading = externalLoading || internalLoading;
 
   return (
     <GoogleOAuthProvider clientId={googleClientId}>
