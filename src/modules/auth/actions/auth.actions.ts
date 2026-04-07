@@ -4,7 +4,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { signUpSchema, createCompanySchema, createBranchSchema } from "../schema/auth.schema";
 import { CACHE_TAGS } from "@/config/constants";
-import { getDefaultPlan, getCompanyBySlug } from "../services/company.service";
+import { getDefaultPlan, getCompanyBySlug } from "@modules/companies";
 
 // Sign up new user with company
 export async function signUpAction(formData: FormData) {
