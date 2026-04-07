@@ -37,9 +37,11 @@ export default function SignInPage() {
       formData.append("email", email);
       formData.append("password", password);
 
-      await signInAction(formData);
+      const result = await signInAction(formData);
       toast.success("Welcome back!");
-      router.push("/dashboard");
+      // Use redirectTo from action if available, default to dashboard
+      const redirectPath = (result as any)?.redirectTo || "/dashboard";
+      router.push(redirectPath);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Sign in failed";
       toast.error(message);

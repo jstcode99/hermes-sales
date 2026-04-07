@@ -5,6 +5,7 @@ export const ROUTES = {
   signup: "/signup",
   callback: "/auth/callback",
   dashboard: "/dashboard",
+  onboarding: "/onboarding",
   settings: "/settings",
   profile: "/profile",
   invoices: "/invoices",

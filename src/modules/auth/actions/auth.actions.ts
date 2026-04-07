@@ -1,10 +1,13 @@
 "use server";
 
 import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { signUpSchema, createCompanySchema, createBranchSchema } from "../schema/auth.schema";
 import { CACHE_TAGS } from "@/config/constants";
-import { getDefaultPlan, getCompanyBySlug } from "@modules/companies";
+import { ROUTES } from "@/config/routes";
+import { getDefaultPlan, getCompanyBySlug } from "../services/company.service";
 
 // Sign up new user with company
 export async function signUpAction(formData: FormData) {
@@ -101,16 +104,35 @@ export async function signUpAction(formData: FormData) {
     if (subError) console.error("Subscription error:", subError.message);
   }
 
+  // If company was created, set onboarding_completed = false explicitly
+  if (input.companyName && authData.user) {
+    await supabase
+      .from("profiles")
+      .update({ onboarding_completed: false })
+      .eq("id", authData.user.id);
+  }
+
   revalidatePath("/");
   revalidateTag(CACHE_TAGS.SESSION.CURRENT_USER, { expire: 0 });
   revalidateTag(CACHE_TAGS.SESSION.USER_ID, { expire: 0 });
 
-  return { success: true, userId: authData.user.id };
+  // Redirect to onboarding if company was created, otherwise to signin
+  const result = {
+    success: true as const,
+    userId: authData.user.id,
+  };
+  
+  if (input.companyName) {
+    return { ...result, redirectTo: ROUTES.onboarding };
+  }
+  
+  return result;
 }
 
 // Sign in existing user
 export async function signInAction(formData: FormData) {
   const supabase = await createClient();
+  const adminClient = await createAdminClient();
 
   const raw = Object.fromEntries(formData);
   const input = signUpSchema.shape.email.parse(raw.email);
@@ -123,11 +145,42 @@ export async function signInAction(formData: FormData) {
 
   if (error) throw new Error(error.message);
 
+  // Check if user has a company
+  const { data: membership } = await supabase
+    .from("company_users")
+    .select("company_id")
+    .eq("user_id", data.user.id)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  // If user has a company, check onboarding status
+  let redirectTo: string = ROUTES.dashboard;
+  
+  if (membership) {
+    const { data: profile } = await adminClient
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("id", data.user.id)
+      .single();
+
+    // If onboarding not completed, redirect to onboarding
+    if (profile && !profile.onboarding_completed) {
+      redirectTo = ROUTES.onboarding;
+    }
+  } else {
+    // No company - redirect to signup to create one
+    redirectTo = ROUTES.signup;
+  }
+
   revalidatePath("/");
   revalidateTag(CACHE_TAGS.SESSION.CURRENT_USER, { expire: 0 });
   revalidateTag(CACHE_TAGS.SESSION.USER_ID, { expire: 0 });
 
-  return { success: true, userId: data.user.id };
+  return {
+    success: true as const,
+    userId: data.user.id,
+    redirectTo,
+  };
 }
 
 // Sign out

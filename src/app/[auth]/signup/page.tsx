@@ -58,9 +58,11 @@ export default function SignUpPage() {
         }
       });
 
-      await signUpAction(fd);
+      const result = await signUpAction(fd);
+      // If company was created, go to onboarding; otherwise go to signin for verification
+      const redirectPath = (result as any)?.redirectTo || "/signin";
       toast.success("Account created! Please check your email to verify.");
-      router.push("/signin");
+      router.push(redirectPath);
     } catch (error) {
       const message = error instanceof Error ? error.message : "Registration failed";
       toast.error(message);
