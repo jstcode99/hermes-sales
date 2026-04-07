@@ -4,7 +4,7 @@ import { revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { inviteUserSchema, updateUserRoleSchema } from "../schema/auth.schema";
 import { CACHE_TAGS } from "@/config/constants";
-import { getCompanyMembers, userHasCompanyAccess, getUserCompanyRole } from "../services/company.service";
+import { getCompanyMembers, userHasCompanyAccess, getUserCompanyRole } from "@modules/companies";
 
 // Invite user to company
 export async function inviteUserAction(formData: FormData) {

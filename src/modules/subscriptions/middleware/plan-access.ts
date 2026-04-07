@@ -5,7 +5,7 @@ import {
   getCompanyUsageStats,
   PlanLimit,
   PLAN_LIMITS,
-} from "@modules/subscriptions";
+} from "../services/subscription.service";
 
 // Check if company can perform action based on plan
 export async function checkPlanLimit(

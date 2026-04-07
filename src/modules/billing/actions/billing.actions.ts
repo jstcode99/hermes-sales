@@ -2,16 +2,22 @@
 
 import { revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { billingConfigSchema, switchPlanSchema } from "@modules/billing/schemas/billing.schema";
+import { billingConfigSchema, switchPlanSchema } from "../schemas/billing.schema";
 import { CACHE_TAGS } from "@/config/constants";
 import {
+  getBillingConfig,
+  updateBillingConfig,
   switchCompanyPlan,
-} from "@modules/billing";
+} from "../services/billing.service";
 import {
   getCompanySubscription,
   getAllPlans,
   getCompanyUsageStats,
 } from "@modules/subscriptions";
+
+// ==========================================
+// Billing Actions
+// ==========================================
 
 // Update billing config
 export async function updateBillingConfigAction(formData: FormData) {
@@ -40,8 +46,7 @@ export async function updateBillingConfigAction(formData: FormData) {
     throw new Error("Insufficient permissions to update billing");
   }
 
-  // Use billing module to update config
-  const { updateBillingConfig } = await import("@modules/billing");
+  // Update billing config using service
   await updateBillingConfig(input.companyId, {
     paymentMethods: input.paymentMethods,
     taxName: input.taxName,
@@ -78,7 +83,7 @@ export async function getUsageStatsAction(companyId: string) {
   return stats;
 }
 
-// Switch plan (simplified - just updates the company plan_id)
+// Switch plan
 export async function switchPlanAction(formData: FormData) {
   const supabase = await createClient();
 
@@ -107,8 +112,9 @@ export async function switchPlanAction(formData: FormData) {
 
   // Get usage stats to check limits
   const stats = await getCompanyUsageStats(input.companyId);
-  const allPlans = await getAllPlans();
-  const newPlan = allPlans.find((p: { id: string }) => p.id === input.planId);
+  const newPlan = await getAllPlans().then((plans) =>
+    plans.find((p) => p.id === input.planId)
+  );
 
   if (!newPlan) {
     throw new Error("Plan not found");
@@ -137,7 +143,7 @@ export async function switchPlanAction(formData: FormData) {
     }
   }
 
-  // Switch plan using billing service
+  // Switch plan using service
   await switchCompanyPlan(input.companyId, input.planId);
 
   revalidateTag(CACHE_TAGS.SESSION.COMPANIES, { expire: 0 });

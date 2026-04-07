@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { CACHE_TAGS } from "@/config/constants";
-import { getDefaultPlan } from "../services/company.service";
+import { getDefaultPlan } from "@modules/companies/services/company.service";
 
 // Sign in with Google
 export async function signInWithGoogleAction(credential: string) {
